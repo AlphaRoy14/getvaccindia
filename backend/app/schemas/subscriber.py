@@ -3,8 +3,13 @@ from pydantic import BaseModel
 from pydantic.networks import EmailStr
 
 
-class Subscriber(BaseModel):
+class SubscriberEmailBody(BaseModel):
+    name: Optional[str]
     email: EmailStr
-    zipcode: Optional[int]
+    zip_code: Optional[int]
     district_id: Optional[int]
-    vaccine_type: int
+    vaccine_doze: int = 3
+
+
+class Subscriber(SubscriberEmailBody):
+    email: EmailStr
