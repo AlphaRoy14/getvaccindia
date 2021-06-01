@@ -11,8 +11,8 @@ class SubscriberModel(RWModel):
     name: Optional[str]
     email: EmailStr
     state: Optional[str]
-    district_id: Optional[str]
-    zip_code: Optional[str]
+    district_id: Optional[int]
+    zip_code: Optional[int]
     vaccine_doze: Optional[int] = 3
     is_subscribed: bool = True
 

@@ -16,6 +16,11 @@ router = APIRouter()
 
 @router.get("/email")
 async def get_email():
+    """
+    Just a test api for mailing service
+
+    """
+    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="just a test api")
     await send_confirmation_email(
         email=["alpharoy14@gmail.com"],
         template_data={"name": "Arindaam", "state": "west bengal", "age": 23, "vaccine doze": 2},
@@ -44,6 +49,9 @@ async def add_subscriber(
     "/unsubscribe/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.SubscriberResponse
 )
 async def unsubscribe(id: str, db: AsyncIOMotorClient = Depends(get_db)):
+    """
+    Enable users to unsubscribe. The emails would have an unsubscribe button.
+    """
     try:
         updated = await crud.update_subscriber_status(db, id)
         if not updated:
@@ -55,6 +63,9 @@ async def unsubscribe(id: str, db: AsyncIOMotorClient = Depends(get_db)):
 
 @router.get("/getAll")
 async def get_all_subs(db: AsyncIOMotorClient = Depends(get_db)):
+    """
+    Get all the subscribed users for testing
+    """
     try:
         subs = await crud.get_all_subscribers(db)
         return JSONResponse(status_code=status.HTTP_200_OK, content={"data": subs})
