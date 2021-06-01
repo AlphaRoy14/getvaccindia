@@ -18,7 +18,7 @@ async def add_subscriber(db: AsyncIOMotorClient, sub: SubscriberModel) -> Subscr
     dbsub.updated_at = ObjectId(dbsub.id).generation_time
     dbsub_encoded = jsonable_encoder(dbsub)
     row = await db[settings.DB_NAME][settings.DOCUMENT].insert_one(dbsub_encoded)
-    return dbsub_encoded
+    return dbsub
 
 
 async def get_all_subscribers(db: AsyncIOMotorClient) -> List[SubscriberModel]:

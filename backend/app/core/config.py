@@ -24,6 +24,17 @@ class Settings(BaseSettings):
     DB_NAME: str
     DOCUMENT: str
 
+    # mail config ✉️
+    MAIL_USERNAME: str
+    MAIL_PASSWORD: str
+    MAIL_PORT: int
+    MAIL_SERVER: str
+    MAIL_TLS: bool = True
+    MAIL_SSL: bool = False
+
+    # unsubscribe base
+    UNSUBSCRIBE_BASE: AnyHttpUrl
+
     class Config:
         case_sensitive = True
 
