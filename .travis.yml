@@ -14,6 +14,7 @@ install:
 
 before_install:
   - cd backend/app/
+  - export PYTHONPATH=backend/app/
 
 script:
   - pytest tests/ -v
