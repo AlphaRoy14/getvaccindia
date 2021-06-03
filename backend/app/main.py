@@ -13,7 +13,7 @@ import uvicorn
 logging.basicConfig(
     filename="fastapi.log",
     format="[%(asctime)s] — %(name)s — %(levelname)s — %(funcName)s:%(lineno)d — %(message)s",
-    level=logging.ERROR,
+    level=logging.INFO,
 )
 app = FastAPI(
     title=settings.PROJECT_NAME,

@@ -1,4 +1,5 @@
 # %%
+import logging
 import os
 from fastapi.encoders import jsonable_encoder
 from fastapi.param_functions import Body
@@ -13,11 +14,14 @@ from typing import Dict, List
 from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from pydantic.networks import EmailStr, HttpUrl
 from core.config import settings
-import ssl
+
+logger = logging.getLogger(__name__)
 
 
 def create_aliased_response(model: BaseModel, status_code) -> JSONResponse:
-    return JSONResponse(status_code=status_code, content=jsonable_encoder(model, by_alias=True))
+    return JSONResponse(
+        status_code=status_code, content=jsonable_encoder(model, by_alias=True)
+    )
 
 
 mail_conf = ConnectionConfig(
@@ -31,18 +35,26 @@ mail_conf = ConnectionConfig(
     USE_CREDENTIALS=True,
 )
 
+# file_loader = FileSystemLoader("backend/app/email-template/")
 file_loader = FileSystemLoader("email-template/")
+
+fm = FastMail(mail_conf)
 
 
 async def send_email(email: List[EmailStr], body, subject):
-    message = MessageSchema(subject=subject, recipients=email, body=body, subtype="html")
-    fm = FastMail(mail_conf)
+    message = MessageSchema(
+        subject=subject, recipients=email, body=body, subtype="html"
+    )
     await fm.send_message(message)
 
 
-async def send_confirmation_email(email: List[EmailStr], template_data: Dict, user_id: str):
+async def send_confirmation_email(
+    email: List[EmailStr], template_data: Dict, user_id: str
+):
     env = Environment(loader=file_loader)
     unsub_slug = settings.UNSUBSCRIBE_BASE + user_id
     template = env.get_template("confirmation.html")
     output = template.render(data=template_data, unsub=unsub_slug)
-    await send_email(email=email, body=output, subject="getvaccindia email subscription")
+    await send_email(
+        email=email, body=output, subject="getvaccindia email subscription"
+    )
