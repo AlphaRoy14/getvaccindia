@@ -1,0 +1,19 @@
+---
+language: python
+branches:
+  only:
+    - master
+
+services:
+  - docker
+install:
+  - pip3 install -r requirements.txt
+  - pip3 install black
+
+before_script:
+  - cd backend/app/
+
+script:
+  - pytest tests/ -v
+
+...
