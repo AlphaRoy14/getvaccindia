@@ -10,5 +10,7 @@ class RWModel(BaseModel):
         arbitary_types_allowed = True
         json_encoders = {
             ObjectId: str,
-            datetime: lambda dt: dt.replace(tzinfo=timezone.utc).isoformat().replace("+00:00", "Z"),
+            datetime: lambda dt: dt.replace(tzinfo=timezone.utc)
+            .isoformat()
+            .replace("+00:00", "Z"),
         }

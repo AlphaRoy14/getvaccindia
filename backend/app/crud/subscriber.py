@@ -12,7 +12,9 @@ from models.subscriber import SubscriberModel, SubscriberInDB
 logger = logging.getLogger(__name__)
 
 
-async def add_subscriber(db: AsyncIOMotorClient, sub: SubscriberModel) -> SubscriberInDB:
+async def add_subscriber(
+    db: AsyncIOMotorClient, sub: SubscriberModel
+) -> SubscriberInDB:
     dbsub = SubscriberInDB(**sub.dict())
     dbsub.created_at = ObjectId(dbsub.id).generation_time
     dbsub.updated_at = ObjectId(dbsub.id).generation_time
