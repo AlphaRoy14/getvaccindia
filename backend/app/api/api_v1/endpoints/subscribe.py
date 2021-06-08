@@ -8,7 +8,7 @@ from fastapi.encoders import jsonable_encoder
 import schemas, models, crud
 from db.mongodb import get_db
 from core.utils import send_confirmation_email
-from scripts.producer import run
+from scripts.producer import run_mail_notif_task
 
 
 logger = logging.getLogger(__name__)
@@ -97,7 +97,7 @@ async def get_all_subs(db: AsyncIOMotorClient = Depends(get_db)):
 @router.get("/triggerEmail")
 async def trigger_email():
     try:
-        await run()
+        await run_mail_notif_task()
         return JSONResponse(status_code=status.HTTP_200_OK, content={"data": "nice"})
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

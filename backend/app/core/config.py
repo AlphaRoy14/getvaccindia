@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     # Setu API
     SETU_API_ZIPCODE: AnyHttpUrl
 
+    # Celery
+    CELERY_BROKER_URL: AnyHttpUrl
+    CELERY_RESULT_BACKEND: AnyHttpUrl
+
     class Config:
         case_sensitive = True
 
