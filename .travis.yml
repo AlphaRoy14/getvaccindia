@@ -9,7 +9,7 @@ branches:
 services:
   - docker
 install:
-  - pip3 install -r requirements.txt
+  - pip3 install -r ../requirements.txt
   - pip3 install black
 
 before_install:
