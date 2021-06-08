@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field, EmailStr
 from bson import ObjectId
@@ -11,9 +11,10 @@ class SubscriberModel(RWModel):
     name: Optional[str]
     email: EmailStr
     state: Optional[str]
+    district: Optional[str]
     district_id: Optional[int]
     zip_code: Optional[int]
-    vaccine_doze: Optional[int] = 3
+    vaccine_doze: Optional[List[int]] = [1, 2]
     is_subscribed: bool = True
 
 
