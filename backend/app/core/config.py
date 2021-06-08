@@ -26,6 +26,7 @@ class Settings(BaseSettings):
 
     # mail config ✉️
     MAIL_USERNAME: str
+    MAIL_FROM: EmailStr
     MAIL_PASSWORD: str
     MAIL_PORT: int
     MAIL_SERVER: str
@@ -34,6 +35,9 @@ class Settings(BaseSettings):
 
     # unsubscribe base
     UNSUBSCRIBE_BASE: AnyHttpUrl
+
+    # Setu API
+    SETU_API_ZIPCODE: AnyHttpUrl
 
     class Config:
         case_sensitive = True

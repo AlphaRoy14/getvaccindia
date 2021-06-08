@@ -37,6 +37,7 @@ mail_conf = ConnectionConfig(
 
 # file_loader = FileSystemLoader("backend/app/email-template/")
 file_loader = FileSystemLoader("email-template/")
+env = Environment(loader=file_loader)
 
 fm = FastMail(mail_conf)
 
@@ -51,10 +52,21 @@ async def send_email(email: List[EmailStr], body, subject):
 async def send_confirmation_email(
     email: List[EmailStr], template_data: Dict, user_id: str
 ):
-    env = Environment(loader=file_loader)
-    unsub_slug = settings.UNSUBSCRIBE_BASE + user_id
+    # TODO change user_id to slug
+
+    unsub_url = settings.UNSUBSCRIBE_BASE + user_id
     template = env.get_template("confirmation.html")
-    output = template.render(data=template_data, unsub=unsub_slug)
+    output = template.render(data=template_data, unsub=unsub_url)
     await send_email(
         email=email, body=output, subject="getvaccindia email subscription"
     )
+
+
+async def format_and_send_email(
+    email: List[EmailStr], template_data: List[Dict], user_id: str, subject: str
+):
+    # TODO remove template file
+    unsub_url = settings.UNSUBSCRIBE_BASE + user_id
+    template = env.get_template("notification.html")
+    output = template.render(data=template_data, unsub=unsub_url)
+    await send_email(email=email, body=output, subject=subject)
