@@ -9,9 +9,11 @@ import schemas, models, crud
 from db.mongodb import get_db
 from core.utils import send_confirmation_email
 from scripts.producer import run_mail_notif_task
+from worker import format_and_send_email_worker
 
 
 logger = logging.getLogger(__name__)
+logger.addHandler(logging.StreamHandler())
 router = APIRouter()
 
 
@@ -94,10 +96,27 @@ async def get_all_subs(db: AsyncIOMotorClient = Depends(get_db)):
         HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-@router.get("/triggerEmail")
+@router.get(
+    "/triggerEmail",
+    deprecated=True,
+    summary="sup sup sup",
+)
 async def trigger_email():
     try:
         await run_mail_notif_task()
         return JSONResponse(status_code=status.HTTP_200_OK, content={"data": "nice"})
     except Exception:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@router.get("/runWorker", description="test function to run celery workers")
+async def run_worker():
+    try:
+        await run_mail_notif_task()
+        # await format_and_send_email_worker.delay()
+        return JSONResponse(
+            status_code=status.HTTP_200_OK, content={"Data": "added to the queue"}
+        )
+    except Exception as e:
+        logger.exception(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)

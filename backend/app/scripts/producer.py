@@ -7,8 +7,10 @@ from datetime import datetime
 from dateutil import tz
 
 from db.mongodb import get_db
+from db.mongodb_utils import connect_to_mongo
 from core.utils import format_and_send_email
 from core.config import settings
+from worker import format_and_send_email_worker
 
 
 async def get_unique_zipcodes() -> List:
@@ -73,15 +75,21 @@ async def email_users(data: List, id_emails: Dict, subject):
     async for item in id_emails:
         id = item["_id"]
         email = item["email"]
-        await format_and_send_email(
+        format_and_send_email_worker.delay(
             email=[email], template_data=formated_data, user_id=id, subject=subject
         )
+        # await format_and_send_email(
+        #     email=[email], template_data=formated_data, user_id=id, subject=subject
+        # )
 
 
 async def run_mail_notif_task():
     """
     Entry point to run the emailing job
     """
+    # connecting to mongo
+    await connect_to_mongo()
+
     zip_codes = await get_unique_zipcodes()
     for zipcode in zip_codes:
         vaccine_data = make_get_request(zipcode)
