@@ -39,7 +39,7 @@ def make_get_request(zipcode):
     date = now.strftime("%d-%m-%Y")
     headers = {
         "Accept-Language": "en_US",
-        "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
+        # "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
     }
     url = str(settings.SETU_API_ZIPCODE) + f"?pincode={zipcode}&date={date}"
     print(f"URL IS {url}")
@@ -99,7 +99,7 @@ async def run_mail_notif_task():
     zip_codes = await get_unique_zipcodes()
     for zipcode in zip_codes:
         vaccine_data = make_get_request(zipcode)
-        if not vaccine_data:
+        if not vaccine_data["sessions"]:
             continue
         print(f"zip {zip_codes} vacine data {vaccine_data}")
         doze1, doze2 = filter_vaccine_data(vaccine_data["sessions"])
