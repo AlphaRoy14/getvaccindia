@@ -101,6 +101,7 @@ async def run_mail_notif_task():
         vaccine_data = make_get_request(zipcode)
         if not vaccine_data:
             continue
+        print(f"zip {zip_codes} vacine data {vaccine_data}")
         doze1, doze2 = filter_vaccine_data(vaccine_data["sessions"])
         if doze1:
             id_email_doze1 = await get_emails_of_users(zipcode, [1])
