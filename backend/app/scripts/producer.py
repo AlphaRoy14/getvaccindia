@@ -1,4 +1,5 @@
 import asyncio
+import os
 from pydantic.main import BaseConfig
 import requests
 from typing import Dict, List
@@ -59,6 +60,9 @@ def filter_vaccine_data(vaccine_data: List[Dict]):
 
 
 async def email_users(data: List, id_emails: Dict, subject):
+
+    # since heroku is paid for more than 2 dynos 😭 we arent running workers on heroku
+    celery_workers = os.environ.get("CELERY_WORKERS", "True") == "True"
     formated_data = list(
         map(
             lambda x: {
@@ -75,12 +79,14 @@ async def email_users(data: List, id_emails: Dict, subject):
     async for item in id_emails:
         id = item["_id"]
         email = item["email"]
-        format_and_send_email_worker.delay(
-            email=[email], template_data=formated_data, user_id=id, subject=subject
-        )
-        # await format_and_send_email(
-        #     email=[email], template_data=formated_data, user_id=id, subject=subject
-        # )
+        if celery_workers:
+            format_and_send_email_worker.delay(
+                email=[email], template_data=formated_data, user_id=id, subject=subject
+            )
+        else:
+            await format_and_send_email(
+                email=[email], template_data=formated_data, user_id=id, subject=subject
+            )
 
 
 async def run_mail_notif_task():
@@ -104,3 +110,7 @@ async def run_mail_notif_task():
             await email_users(
                 doze2, id_email_doze2, subject="Covid vaccine doze 2 available"
             )
+
+
+if __name__ == "__main__":
+    asyncio.run(run_mail_notif_task())
