@@ -39,7 +39,7 @@ def make_get_request(zipcode):
     date = now.strftime("%d-%m-%Y")
     headers = {
         "Accept-Language": "en_US",
-        # "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1",
     }
     url = str(settings.SETU_API_ZIPCODE) + f"?pincode={zipcode}&date={date}"
     print(f"URL IS {url}")
