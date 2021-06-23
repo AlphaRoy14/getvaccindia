@@ -16,4 +16,5 @@ from core.celery_app import celery_app
 def format_and_send_email_worker(
     email: List, template_data: List[Dict], user_id: str, subject: str
 ):
+    print("SENDING MAIL WORKER TASK")
     async_to_sync(format_and_send_email)(email, template_data, user_id, subject)

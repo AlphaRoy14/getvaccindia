@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     MAIL_SSL: bool = False
 
     # unsubscribe base
-    UNSUBSCRIBE_BASE: AnyHttpUrl
+    UNSUBSCRIBE_BASE: Optional[AnyHttpUrl]
 
     # Setu API
     SETU_API_ZIPCODE: AnyHttpUrl

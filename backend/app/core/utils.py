@@ -66,6 +66,7 @@ async def format_and_send_email(
     email: List[EmailStr], template_data: List[Dict], user_id: str, subject: str
 ):
     # TODO remove template file
+    print(f"sending email {email}")
     unsub_url = settings.UNSUBSCRIBE_BASE + user_id
     template = env.get_template("notification.html")
     output = template.render(data=template_data, unsub=unsub_url)

@@ -59,10 +59,8 @@ def filter_vaccine_data(vaccine_data: List[Dict]):
     return (doze1_filter, doze2_filter)
 
 
-async def email_users(data: List, id_emails: Dict, subject):
+async def email_users(data: List, id_emails, subject):
 
-    # since heroku is paid for more than 2 dynos 😭 we arent running workers on heroku
-    celery_workers = os.environ.get("CELERY_WORKERS", "True") == "True"
     formated_data = list(
         map(
             lambda x: {
@@ -79,14 +77,9 @@ async def email_users(data: List, id_emails: Dict, subject):
     async for item in id_emails:
         id = item["_id"]
         email = item["email"]
-        if celery_workers:
-            format_and_send_email_worker.delay(
-                email=[email], template_data=formated_data, user_id=id, subject=subject
-            )
-        else:
-            await format_and_send_email(
-                email=[email], template_data=formated_data, user_id=id, subject=subject
-            )
+        format_and_send_email_worker.delay(
+            email=[email], template_data=formated_data, user_id=id, subject=subject
+        )
 
 
 async def run_mail_notif_task():
@@ -99,9 +92,9 @@ async def run_mail_notif_task():
     zip_codes = await get_unique_zipcodes()
     for zipcode in zip_codes:
         vaccine_data = make_get_request(zipcode)
+        print(f"zip {zipcode}, {vaccine_data}\n")
         if not vaccine_data["sessions"]:
             continue
-        print(f"zip {zip_codes} vacine data {vaccine_data}")
         doze1, doze2 = filter_vaccine_data(vaccine_data["sessions"])
         if doze1:
             id_email_doze1 = await get_emails_of_users(zipcode, [1])
