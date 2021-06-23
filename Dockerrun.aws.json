@@ -7,15 +7,9 @@
             "links":[
                 "redis"
             ],
-            "image":"alpharoy2/getvaccindia",
+            "image":"alpharoy2/getvaccindia:latest",
             "essential": false,
             "memory": 200,
-            "environmentFiles":[
-                {
-                    "value": "arn:aws:s3:::getvaccindiaenv/env",
-                    "type": "s3"
-                }
-            ],
             "environment":[
                 {
                     "name":"CELERY_BROKER_URL",
@@ -42,15 +36,9 @@
                 "redis",
                 "scheduler"
             ],
-            "image": "alpharoy2/getvaccindia",
+            "image": "alpharoy2/getvaccindia:latest",
             "essential": false,
             "memory": 500,
-            "environmentFiles": [
-                {
-                    "value": "arn:aws:s3:::getvaccindiaenv/env",
-                    "type": "s3"
-                }
-            ],
             "environment":[
                 {
                     "name":"CELERY_BROKER_URL",
