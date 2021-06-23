@@ -2,21 +2,44 @@
 language: python
 python:
   - "3.7"
+
+sudo: required
+
 branches:
   only:
     - master
 
 services:
   - docker
-install:
-  - pip3 install -r ../requirements.txt
-  - pip3 install black
 
 before_install:
   - cd backend/app/
   - export PYTHONPATH=.
 
+
+install:
+  - pip3 install -r ../requirements.txt
+  - pip3 install black
+
+
 script:
   - pytest tests/ -v
+
+after_success:
+  - docker build -t "$DOCKER_ID"/getvaccindia ./backend
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push "$DOCKER_ID"/getvaccindia
+
+deploy:
+  provider: elasticbeanstalk
+  region: ap-south-1
+  app: getvaccindia
+  env: Getvaccindia-env
+  bucket_name: elasticbeanstalk-ap-south-1-237929504853
+  bucket_path: getvaccindia
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
 
 ...

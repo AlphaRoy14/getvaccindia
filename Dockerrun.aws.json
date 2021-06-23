@@ -1,0 +1,67 @@
+{
+    "AWSEBDockerrunVersion":2,
+
+    "containerDefinitions":[
+        {
+            "name":"scheduler",
+            "links":[
+                "redis"
+            ],
+            "image":"alpharoy2/getvaccindia",
+            "essential": false,
+            "memory": 200,
+            "environmentFiles":[
+                {
+                    "value": "arn:aws:s3:::getvaccindiaenv/env",
+                    "type": "s3"
+                }
+            ],
+            "environment":[
+                {
+                    "name":"CELERY_BROKER_URL",
+                    "value":"redis://redis:6379/0"
+                },
+                {
+                    "name":"CELERY_RESULT_BACKEND",
+                    "value":"redis://redis:6379/0"
+                }
+            ],
+            "command": ["./start_scheduler.sh"]
+
+        },
+        {
+            "name":"redis",
+            "image":"redis:6-alpine",
+            "memory":200,
+            "essential": true
+
+        },
+        {
+            "name": "worker",
+            "link":[
+                "redis",
+                "scheduler"
+            ],
+            "image": "alpharoy2/getvaccindia",
+            "essential": false,
+            "memory": 500,
+            "environmentFiles": [
+                {
+                    "value": "arn:aws:s3:::getvaccindiaenv/env",
+                    "type": "s3"
+                }
+            ],
+            "environment":[
+                {
+                    "name":"CELERY_BROKER_URL",
+                    "value":"redis://redis:6379/0"
+                },
+                {
+                    "name":"CELERY_RESULT_BACKEND",
+                    "value":"redis://redis:6379/0"
+                }
+            ]
+
+        }
+    ]
+}
