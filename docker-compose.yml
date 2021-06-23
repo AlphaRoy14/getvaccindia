@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+    web:
+        build: ./backend
+        command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+        volumes:
+            - ./backend/app:/usr/src/app
+        ports:
+            - 8004:8000
+        environment:
+            - ENVIRONMENT=dev
+            - PYTHONPATH=/usr/src/app
+            - CELERY_BROKER_URL=redis://redis:6379/0
+            - CELERY_RESULT_BACKEND=redis://redis:6379/0
+        depends_on:
+            - redis
+
+    worker:
+        build: ./backend
+        # command: celery -A worker worker --loglevel=info --logfile=logs/celery.log
+        command: sh -c "chmod +x start_workers.sh && ./start_workers.sh"
+        volumes:
+            - ./backend/app:/usr/src/app
+        environment:
+            - ENVIRONMENT=dev
+            - PYTHONPATH=/usr/src/app
+            - CELERY_BROKER_URL=redis://redis:6379/0
+            - CELERY_RESULT_BACKEND=redis://redis:6379/0
+        restart: always
+        depends_on:
+            - web
+            - redis
+            - producer
+    producer:
+        build: ./backend
+        command: sh -c "chmod +x start_scheduler.sh && ./start_scheduler.sh"
+        volumes:
+            - ./backend/app:/usr/src/app
+        environment:
+            - ENVIRONMENT=dev
+            - PYTHONPATH=/usr/src/app
+            - CELERY_BROKER_URL=redis://redis:6379/0
+            - CELERY_RESULT_BACKEND=redis://redis:6379/0
+        restart: always
+        depends_on:
+            - web
+            - redis
+
+    redis:
+        image: redis:6-alpine
+
