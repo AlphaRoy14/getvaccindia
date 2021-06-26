@@ -5,6 +5,7 @@ __pycache__
 .vscode
 .env
 .pytest*
+.log
 celerybeat-schedule
 
 # Elastic Beanstalk Files
