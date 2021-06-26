@@ -26,7 +26,8 @@ script:
   - pytest tests/ -v
 
 after_success:
-  - docker build -t "$DOCKER_ID"/getvaccindia ../
+  - cd ../..
+  - docker build -t "$DOCKER_ID"/getvaccindia backend/
   - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD" docker.io
   - docker push "$DOCKER_ID"/getvaccindia
 
