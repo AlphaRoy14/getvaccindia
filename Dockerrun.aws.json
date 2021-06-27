@@ -5,7 +5,7 @@
         {
             "name":"scheduler",
             "links":[
-                "redis"
+                "redis_db"
             ],
             "image":"alpharoy2/getvaccindia:latest",
             "essential": false,
@@ -13,18 +13,18 @@
             "environment":[
                 {
                     "name":"CELERY_BROKER_URL",
-                    "value":"redis://redis:6379/0"
+                    "value":"redis://redis_db:6379/0"
                 },
                 {
                     "name":"CELERY_RESULT_BACKEND",
-                    "value":"redis://redis:6379/0"
+                    "value":"redis://redis_db:6379/0"
                 }
             ],
             "command": ["./start_scheduler.sh"]
 
         },
         {
-            "name":"redis",
+            "name":"redis_db",
             "image":"redis:6-alpine",
             "memory":200,
             "essential": true
@@ -32,8 +32,8 @@
         },
         {
             "name": "worker",
-            "link":[
-                "redis",
+            "links":[
+                "redis_db",
                 "scheduler"
             ],
             "image": "alpharoy2/getvaccindia:latest",
@@ -42,13 +42,14 @@
             "environment":[
                 {
                     "name":"CELERY_BROKER_URL",
-                    "value":"redis://redis:6379/0"
+                    "value":"redis://redis_db:6379/0"
                 },
                 {
                     "name":"CELERY_RESULT_BACKEND",
-                    "value":"redis://redis:6379/0"
+                    "value":"redis://redis_db:6379/0"
                 }
-            ]
+            ],
+	   "command": ["./start_workers.sh"]
 
         }
     ]
