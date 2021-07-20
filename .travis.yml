@@ -35,7 +35,7 @@ deploy:
   provider: elasticbeanstalk
   region: ap-south-1
   app: getvaccindia
-  env: Getvaccindia-env
+  env: Getvaccindia-env-2
   bucket_name: elasticbeanstalk-ap-south-1-237929504853
   bucket_path: getvaccindia
   on:
