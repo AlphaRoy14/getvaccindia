@@ -13,5 +13,5 @@ def send_notification():
 
 print(f"THE NAME OF THE TAsk IS {send_notification.name}")
 celery_app.conf.beat_schedule = {
-    "Email-every-30-sec-task": {"task": "send_notification", "schedule": 30.0}
+    "Email-every-min-task": {"task": "send_notification", "schedule": 120.0}
 }

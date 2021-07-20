@@ -93,7 +93,7 @@ async def run_mail_notif_task():
     for zipcode in zip_codes:
         vaccine_data = make_get_request(zipcode)
         print(f"zip {zipcode}, {vaccine_data}\n")
-        if not vaccine_data["sessions"]:
+        if not vaccine_data.get("sessions", None):
             continue
         doze1, doze2 = filter_vaccine_data(vaccine_data["sessions"])
         if doze1:
