@@ -20,7 +20,7 @@
                     "value":"redis://redis_db:6379/0"
                 }
             ],
-            "ports":[
+            "portMappings":[
                 {
                     "containerPort": 80,
                     "hostPort": 80
