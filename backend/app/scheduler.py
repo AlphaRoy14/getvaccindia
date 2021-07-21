@@ -11,7 +11,10 @@ def send_notification():
     async_to_sync(run_mail_notif_task)()
 
 
-print(f"THE NAME OF THE TAsk IS {send_notification.name}")
+print(f"THE NAME OF THE TASK IS {send_notification.name}")
 celery_app.conf.beat_schedule = {
-    "Email-every-min-task": {"task": "send_notification", "schedule": 120.0}
+    "Email-every-12-hour-task": {
+        "task": "send_notification",
+        "schedule": 12 * 60 * 60.0,
+    }
 }
