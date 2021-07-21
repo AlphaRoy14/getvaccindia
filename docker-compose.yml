@@ -11,6 +11,8 @@ services:
             - PYTHONPATH=/usr/src/app
             - CELERY_BROKER_URL=redis://redis:6379/0
             - CELERY_RESULT_BACKEND=redis://redis:6379/0
+        env_file:
+            - .env
         depends_on:
             - redis
 
@@ -27,6 +29,8 @@ services:
             - web
             - redis
             - producer
+        env_file:
+            - .env
     producer:
         image: alpharoy2/getvaccindia:latest
         command: sh -c "chmod +x start_scheduler.sh && ./start_scheduler.sh"
@@ -36,6 +40,8 @@ services:
             - CELERY_BROKER_URL=redis://redis:6379/0
             - CELERY_RESULT_BACKEND=redis://redis:6379/0
         restart: always
+        env_file:
+            - .env
         depends_on:
             - web
             - redis
