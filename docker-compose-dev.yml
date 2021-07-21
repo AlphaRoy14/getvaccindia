@@ -1,13 +1,15 @@
-version: '2.4'
+version: '3.8'
 
 services:
     web:
-        image: alpharoy2/getvaccindia:latest
-        command: sh -c "chmod +x start_web.sh && ./start_web.sh"
+        build: ./backend
+        command: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+        volumes:
+            - ./backend/app:/usr/src/app
         ports:
-            - 80:80
+            - 8004:8000
         environment:
-            - ENVIRONMENT=prod
+            - ENVIRONMENT=dev
             - PYTHONPATH=/usr/src/app
             - CELERY_BROKER_URL=redis://redis:6379/0
             - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -15,8 +17,11 @@ services:
             - redis
 
     worker:
-        image: alpharoy2/getvaccindia:latest
+        build: ./backend
+        # command: celery -A worker worker --loglevel=info --logfile=logs/celery.log
         command: sh -c "chmod +x start_workers.sh && ./start_workers.sh"
+        volumes:
+            - ./backend/app:/usr/src/app
         environment:
             - ENVIRONMENT=dev
             - PYTHONPATH=/usr/src/app
@@ -28,8 +33,10 @@ services:
             - redis
             - producer
     producer:
-        image: alpharoy2/getvaccindia:latest
+        build: ./backend
         command: sh -c "chmod +x start_scheduler.sh && ./start_scheduler.sh"
+        volumes:
+            - ./backend/app:/usr/src/app
         environment:
             - ENVIRONMENT=dev
             - PYTHONPATH=/usr/src/app
