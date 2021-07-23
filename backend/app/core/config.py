@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     # Celery
     CELERY_BROKER_URL: Optional[str]
     CELERY_RESULT_BACKEND: Optional[str]
+    CELERY_SCHEDULE_INTERVAL: Optional[Union[float, int]] = 12 * 60 * 60.0
 
     class Config:
         case_sensitive = True
