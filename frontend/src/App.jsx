@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Typography, CssBaseline, Avatar, Button, TextField, FormControlLabel, Grid, Container, Checkbox, Link} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import DoneIcon from '@material-ui/icons/Done';
 
 
 
@@ -48,7 +49,8 @@ const SignUp = () => {
 
   const axios = require("axios")
 
-  const [SignUpView, setSignUpView]  = useState(false)
+  // post sign up view is to display the message of thanks
+  const [postSignUpView, setPostSignUpView]  = useState(false)
 
   const [email, setEamil] = useState("")
   const [name, setName] = useState("")
@@ -96,7 +98,7 @@ const SignUp = () => {
       axios.post("http://getvaccindia-env.eba-brene2w8.ap-south-1.elasticbeanstalk.com/api/v1/user/subscribe", obj)
         .then((response) => {
           console.log(response)
-          setSignUpView(true)
+          setPostSignUpView(true)
         })
         .catch((error) => { console.log(error) })
     }
@@ -110,7 +112,7 @@ const SignUp = () => {
         <Typography component="h1" variant="h3">
           GetvaccIndia
         </Typography>
-        <Typography component="h2" variant="caption">
+        <Typography component="h2" variant="subtitle2">
           Sign up for email alerts!
         </Typography>
         <Typography component="h2" variant="caption">
@@ -136,7 +138,7 @@ const SignUp = () => {
             margin="normal"
             id="name"
             fullWidth
-            label="whats your Name nigga?"
+            label="Whats your name nigga?"
             name="full name"
             type="text"
             autoComplete="name"
@@ -163,14 +165,19 @@ const SignUp = () => {
             control={<Checkbox value="doze 2" color="primary" onChange={(e)=>handleDoze2(e)}/>}
             label="Doze 2"
           />
+          <Typography align="right" display="block" component="body2" variant="caption" color="textSecondary">
+          *Compulsary Fields
+        </Typography>
           <Button
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            startIcon = {postSignUpView && <DoneIcon color="primary" />}
+            disabled = {postSignUpView}
           >
-            Sign Up
+            {!postSignUpView ? "Sign Up" : ""}
           </Button>
           <Grid container>
             <Grid item sm>
@@ -181,7 +188,7 @@ const SignUp = () => {
           </Grid>
 
         </form>
-        {SignUpView && <ThankingPage />}
+        {postSignUpView && <ThankingPage />}
       </div>
     </Container>
   )
