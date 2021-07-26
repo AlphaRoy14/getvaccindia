@@ -64,7 +64,7 @@ async def add_subscriber(
         )
 
 
-@router.put(
+@router.get(
     "/unsubscribe/{id}",
     status_code=status.HTTP_202_ACCEPTED,
     response_model=schemas.ResponseModel,

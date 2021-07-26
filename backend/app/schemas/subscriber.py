@@ -12,7 +12,7 @@ class SubscriberEmailBody(BaseModel):
     zip_code: Optional[int]
     district_id: Optional[int]
     # str so that it can be joined
-    vaccine_doze: List[str] = [1, 2]
+    vaccine_doze: List[str]
 
     @validator("vaccine_doze")
     def set_vaccine_doze_to_str(cls, v):

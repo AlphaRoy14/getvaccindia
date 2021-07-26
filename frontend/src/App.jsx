@@ -96,7 +96,8 @@ const SignUp = () => {
     console.log(email, name, zip, doze1, doze2, dozes, obj)
 
     if (email && zip && dozes.length) {
-      axios.post("http://getvaccindia-env.eba-brene2w8.ap-south-1.elasticbeanstalk.com/api/v1/user/subscribe", obj)
+      alert("test")
+      axios.post("http://getvaccindia-env.eba-brene2w8.ap-south-1.elasticbeanstalk.com/api/v1/user/subscribe/", obj)
         .then((response) => {
           console.log(response)
           setPostSignUpView(true)
@@ -166,7 +167,7 @@ const SignUp = () => {
             control={<Checkbox value="doze 2" color="primary" onChange={(e)=>handleDoze2(e)}/>}
             label="Doze 2"
           />
-          <Typography align="right" display="block" component="body2" variant="caption" color="textSecondary">
+          <Typography align="right" display="block" variant="caption" color="textSecondary">
           *Compulsary Fields
         </Typography>
           <Button
