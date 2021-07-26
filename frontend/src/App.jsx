@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3,0,2)
+    margin: theme.spacing(3, 0, 2),
+    cursor: 'pointer' // for button to work in ios
   },
 }))
 
@@ -138,7 +139,7 @@ const SignUp = () => {
             margin="normal"
             id="name"
             fullWidth
-            label="Whats your name nigga?"
+            label="Name"
             name="full name"
             type="text"
             autoComplete="name"

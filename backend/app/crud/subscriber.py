@@ -24,7 +24,6 @@ async def add_subscriber(
 
 
 async def get_all_subscribers(db: AsyncIOMotorClient) -> List[SubscriberModel]:
-    logger.info(f"get all subs")
     subs = []
     rows = db[settings.DB_NAME][settings.DOCUMENT].find()
     async for row in rows:
@@ -44,6 +43,6 @@ async def update_subscriber_status(db: AsyncIOMotorClient, id: str) -> int:
     row.updated_at = datetime.utcnow()
     row_encoded = jsonable_encoder(row)
     updated = await db[settings.DB_NAME][settings.DOCUMENT].update_one(
-        {"id_": str(row.id)}, {"$set": row_encoded}
+        {"_id": str(row.id)}, {"$set": row_encoded}
     )
-    return updated.matched_count
+    return updated.modified_count

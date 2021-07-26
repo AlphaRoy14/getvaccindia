@@ -9,5 +9,5 @@ class ResponseModel(BaseModel):
     data: Optional[Any]
 
 
-class SubscriberResponse(ResponseModel):
+class SubscriberResponseModel(ResponseModel):
     data: Subscriber

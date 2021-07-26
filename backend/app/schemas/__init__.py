@@ -1,2 +1,2 @@
-from .response import SubscriberResponse
+from .response import SubscriberResponseModel, ResponseModel
 from .subscriber import Subscriber, SubscriberEmailBody

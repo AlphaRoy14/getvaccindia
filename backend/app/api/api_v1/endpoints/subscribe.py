@@ -40,7 +40,7 @@ async def get_email():
 
 @router.post(
     "/subscribe",
-    response_model=schemas.SubscriberResponse,
+    response_model=schemas.SubscriberResponseModel,
     status_code=status.HTTP_201_CREATED,
 )
 async def add_subscriber(
@@ -67,24 +67,21 @@ async def add_subscriber(
 @router.put(
     "/unsubscribe/{id}",
     status_code=status.HTTP_202_ACCEPTED,
-    response_model=schemas.SubscriberResponse,
+    response_model=schemas.ResponseModel,
 )
 async def unsubscribe(id: str, db: AsyncIOMotorClient = Depends(get_db)):
     """
     Enable users to unsubscribe. The emails would have an unsubscribe button.
     """
-    try:
-        updated = await crud.update_subscriber_status(db, id)
-        if not updated:
-            raise HTTPException
-        return {"data": "unsubscribed"}
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed"
-        )
+
+    updated = await crud.update_subscriber_status(db, id)
+    if not updated:
+        logger.exception("unsubscribe error")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST)
+    return {"data": "unsubscribed"}
 
 
-@router.get("/getAll")
+@router.get("/getAll", deprecated=True)
 async def get_all_subs(db: AsyncIOMotorClient = Depends(get_db)):
     """
     Get all the subscribed users for testing
@@ -99,7 +96,7 @@ async def get_all_subs(db: AsyncIOMotorClient = Depends(get_db)):
 @router.get(
     "/triggerEmail",
     deprecated=True,
-    summary="sup sup sup",
+    summary="Trigger email for testing",
 )
 async def trigger_email():
     try:
