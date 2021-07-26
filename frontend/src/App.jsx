@@ -89,9 +89,9 @@ const SignUp = () => {
     const obj = {
       "name": name,
       "email": email,
-      "zip": zip,
-      "dozes": dozes,
-      "is_subscrived": true
+      "zip_code": zip,
+      "vaccine_doze": dozes,
+      "is_subscribed": true
     }
     console.log(email, name, zip, doze1, doze2, dozes, obj)
 
