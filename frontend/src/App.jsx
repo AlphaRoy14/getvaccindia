@@ -96,7 +96,6 @@ const SignUp = () => {
     console.log(email, name, zip, doze1, doze2, dozes, obj)
 
     if (email && zip && dozes.length) {
-      alert("test")
       axios.post("http://getvaccindia-env.eba-brene2w8.ap-south-1.elasticbeanstalk.com/api/v1/user/subscribe/", obj)
         .then((response) => {
           console.log(response)
@@ -160,12 +159,12 @@ const SignUp = () => {
             error={zipError}
           />
           <FormControlLabel
-            control={<Checkbox value="doze 1" color="primary" onChange={(e)=>handleDoze1(e)} defaultChecked/>}
-            label="Doze 1"
+            control={<Checkbox value="dose 1" color="primary" onChange={(e)=>handleDoze1(e)} defaultChecked/>}
+            label="Dose 1"
           />
           <FormControlLabel
-            control={<Checkbox value="doze 2" color="primary" onChange={(e)=>handleDoze2(e)}/>}
-            label="Doze 2"
+            control={<Checkbox value="dose 2" color="primary" onChange={(e)=>handleDoze2(e)}/>}
+            label="Dose 2"
           />
           <Typography align="right" display="block" variant="caption" color="textSecondary">
           *Compulsary Fields
@@ -202,8 +201,6 @@ const App = () => {
   return (
     <>
       <SignUp />
-      {/* <CssBaseline />
-      <Typography variant="h2" align="center" color="textPrimary" gutterBottom >GetvaccIndia</Typography> */}
     </>
   )
 }

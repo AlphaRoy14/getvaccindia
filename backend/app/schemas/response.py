@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, Any
+
+from starlette.types import Message
 from schemas.subscriber import Subscriber
 
 
@@ -11,3 +13,7 @@ class ResponseModel(BaseModel):
 
 class SubscriberResponseModel(ResponseModel):
     data: Subscriber
+
+
+class UnsubscribedResponseModel(BaseModel):
+    message: str
