@@ -31,16 +31,16 @@ after_success:
   - docker login -u "$DOCKER_ID" -p "$DOCKER_PASSWORD" docker.io
   - docker push "$DOCKER_ID"/getvaccindia
 
-deploy:
-  provider: elasticbeanstalk
-  region: ap-south-1
-  app: getvaccindia
-  env: Getvaccindia-env
-  bucket_name: elasticbeanstalk-ap-south-1-237929504853
-  bucket_path: getvaccindia
-  on:
-    branch: master
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
+# deploy:
+#   provider: elasticbeanstalk
+#   region: ap-south-1
+#   app: getvaccindia
+#   env: Getvaccindia-env
+#   bucket_name: elasticbeanstalk-ap-south-1-237929504853
+#   bucket_path: getvaccindia
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
 
 ...
