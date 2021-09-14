@@ -4,7 +4,10 @@ A bot to search and send email notification for available vaccine slots near you
 
 ---
 
-# Quick start
+## Architecture
+![arch](./docs/arch.jpg)
+
+## Quick start
 
 Account setup
 
